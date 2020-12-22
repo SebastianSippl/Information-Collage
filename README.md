@@ -8,7 +8,7 @@ Using the Plugin:
 
 - Download Code
 - Open Chrome go to chrome://extensions/
-- Click "load unpacked"
+- Click "load unpacked" (Developer mode needs to be enabled first!)
 - Select downloaded folder
 
 How to use:
