@@ -1,0 +1,67 @@
+﻿{
+  "manifest_version": 2,
+  "name": "Information Collage",
+  "description": "Information Collage Extension",
+  "version": "1.0",
+   "background": {
+      "scripts": [ "scripts/externalLibraries/jquery-2.2.3.js", "scripts/appBL/AjaxInterceptor.js", "scripts/appBL/BackgroundScript.js", "scripts/appDAL/GenericRepository.js", "scripts/appDAL/SnippetRepository.js",
+                   "scripts/appDAL/StemTermRepository.js", "scripts/appDAL/RepositoryManager.js", "scripts/utils/ImageUtil.js", "scripts/appBL/textAnalysis/TFIDFProcessor.js", "scripts/appBL/textAnalysis/TermFrequencyManager.js",
+                   "scripts/appBL/textAnalysis/TextProcessor.js", "scripts/externalLibraries/Snowball.js", "scripts/externalLibraries/log4javascript.js" ],
+      "persistent" :  true
+    },
+   "browser_action": {
+    "default_icon": "images/collage-512.png",
+    "default_popup": "html/popup.html"
+  },
+
+  "content_security_policy": "script-src 'self' 'unsafe-eval' https://www.googleapis.com https://www.google.com; object-src 'self'",
+  "permissions": [
+    "activeTab",
+    "https://www.googleapis.com/*",
+    "https://www.google.com/*",
+    "downloads",
+    "webRequest",
+    "tabs",
+    "identity",
+    "notifications",
+    "contextMenus",
+    "<all_urls>"
+  ],
+  "icons": {
+    "512": "images/collage-512.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [ "<all_urls>" ],
+      "css": ["styles/style.css","styles/main.css"],
+      "js": [
+               ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [ "<all_urls>"],
+      "js": ["scripts/externalLibraries/jquery-2.2.3.js", "scripts/externalLibraries/tether.min.js", "scripts/externalLibraries/annotator.js", "scripts/appDAL/GenericRepository.js" , "scripts/appUI/pageUI/domElementUI.js", "scripts/utils/ImageUtil.js", "scripts/appDAL/SnippetRepository.js",
+        "scripts/appDAL/RepositoryManager.js", "scripts/utils/DomHelper.js", "scripts/appUI/pageUI/ContentScript.js","scripts/appUI/pageUI/initialization/contentScriptStarter.js",
+        "scripts/utils/PageSnippetHelper.js", "scripts/appBL/IndexedDBStorage.js", "scripts/appUI/pageUI/AnnotationUpdateHandler.js", "scripts/externalLibraries/unfluff.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources":["scripts/externalLibraries/pdf/web/viewer.html", "html/Visualize.html"],
+  "commands":{
+    "toggle-tool":{
+        "suggested_key":{
+          "default": "Ctrl+Shift+Y"
+        },
+      "description" : "Toggle Browser Collage Tool"
+    },
+    "saveText":{
+      "suggested_key":{
+        "default": "Alt+Shift+D"
+      },
+      "description" : "Save selected Text"
+    }
+
+  }
+
+}

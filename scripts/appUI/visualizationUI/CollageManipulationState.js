@@ -1,0 +1,13 @@
+class CollageManipulationState
+{
+    constructor()
+    {
+
+    }
+
+    clicked()
+    {
+
+    }
+
+}

@@ -1,0 +1,1 @@
+ mysqldump  -u ssippl  -p ssippl iclogs > logs.sql

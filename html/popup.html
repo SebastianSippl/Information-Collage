@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <script src="../scripts/externalLibraries/jquery-2.2.3.js"></script>
+  <script src="../scripts/appDAL/GenericRepository.js"></script>
+  <script src="../scripts/appDAL/SnippetRepository.js"></script>
+  <script src="../scripts/appDAL/RepositoryManager.js"></script>
+  <script src="../scripts/appUI/popupUI/PopupScript.js"></script>
+  <script src="../scripts/externalLibraries/bootstrap.js"></script>
+  <script src="../scripts/externalLibraries/FileSaver.js"></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>Start</title>
+  <style>
+    body {
+      font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+      font-size: 100%;
+    }
+    #status {
+      /* avoid an excessively wide status text */
+      white-space: pre;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      width:400px;
+      max-width: 400px;
+    }
+  </style>
+
+  <!-- Bootstrap -->
+  <link href="../styles/bootstrap.css" rel="stylesheet">
+</head>
+<body style="width:420px;height:100px;background-image:url('../images/background.png')">
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12">
+      <h4>Information Collage</h4>
+      <div class="btn-group" role="group" aria-label="...">
+      <button class="btn btn-default" type="button" id="btnVisualize">Show Collage</button>
+      <button class="btn btn-default" type="button" id="btnExportDB">Export DB</button>
+      <button class="btn btn-default" type="button" id="btnImportDB">Import DB</button>
+        <input style="display:none;" id="fileDialog" type="file" />
+      <button class="btn btn-danger" type="button" id="btnEraseDB">EraseDB</button>
+      </div><br/><br>
+  <div class="input-group">
+    <span class="input-group-btn">
+      <button class="btn btn-default" type="button" id="btnStorePage">Store Page</button>
+    </span>
+    <input id="txtComment" type="text" class="form-control" id="comment" placeholder="Comment ...">
+  </div>
+      <br/>
+        <div class="checkbox">
+          <label><input id="chkToolState" type="checkbox" value="">Enable Annotations</label><br>
+          <label><input id="chkPDFState" type="checkbox" value="">Use Collage PDF Viewer</label><br>
+          <label><input id="chkAJAXInterception" type="checkbox" value="">Enable Ajax Updates</label><br>
+          <label><input id="chkAreaSelection" type="checkbox" value="">Enable DOM Selection</label>
+        </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="confirmModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" >
+         Drop the whole Database?
+        <button type="button" id="confirm" class="btn btn-success btn-block">Ok</button>
+        <button type="button" id="abort" class="btn btn-danger btn-block">Cancel</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+</body>
+</html>
+
+
+
+
