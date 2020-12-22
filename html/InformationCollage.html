@@ -1,347 +1,473 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
     <title>Information Collage</title>
     <meta charset="utf-8" />
-    <link rel="import" href="imports/InformationCollageImports.html">
+    <link rel="stylesheet" href="../../styles/bootstrap.css">
+    <link rel="stylesheet" href="../../styles/style.css">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Roboto+Condensed">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Crimson+Text">
+    <link rel="stylesheet" href="../../styles/InformationCollage.css">
+
+
+    <!-- External Libraries -->
+
+    <script src="../../scripts/externalLibraries/jquery-2.2.3.js"></script>
+    <script src="../../scripts/externalLibraries/bootstrap.js"></script>
+    <script src="../../scripts/externalLibraries/Snowball.js"></script>
+    <script src="../../scripts/externalLibraries/unfluff.js"></script>
+    <script src="../../scripts/externalLibraries/d3.js"></script>
+    <script src="../../scripts/externalLibraries/d3.layout.cloud.js"></script>
+    <script src="../../scripts/externalLibraries/freewall.js"></script>
+    <script src="../../scripts/externalLibraries/colorbrewer.js"></script>
+    <script src="../../scripts/externalLibraries/nlp_compromise.js"></script>
+    <script src="../../scripts/externalLibraries/jDBSCAN.js"></script>
+    <script src="../../scripts/externalLibraries/convexhull.js"></script>
+    <script src="../../scripts/externalLibraries/log4javascript.js"></script>
+    <script src="../../scripts/externalLibraries/rhill-voronoi-core.min.js"></script>
+    <script src="../../scripts/externalLibraries/hull.js"></script>
+
+    <script src="../../scripts/appUI/visualizationUI/supportClasses/WebSearchComponent.js"></script>
+
+    <!-- Infrastructure -->
+
+    <script src="../../scripts/appUI/visualizationUI/supportClasses/StateController.js"></script>
+    <script src="../../scripts/appUI/visualizationUI/supportClasses/SelectionController.js"></script>
+
+    <!-- Collage Components -->
+    <script src="../../scripts/appUI/visualizationUI/item/ItemManager.js"></script>
+    <script src="../../scripts/appUI/visualizationUI/item/Item.js"></script>
+
+    <script src="../../scripts/appUI/visualizationUI/bubble/BubbleManager.js"></script>
+    <script src="../../scripts/appUI/visualizationUI/bubble/Bubble.js"></script>
+    <script src="../../scripts/appUI/visualizationUI/bubble/BubbleManipulationState.js"></script>
+    <script src="../../scripts/appUI/visualizationUI/bubble/BubbleInfoState.js"></script>
+
+    <script src="../../scripts/appUI/visualizationUI/item/ItemInfoState.js"></script>
+    <script src="../../scripts/appUI/visualizationUI/item/ItemManipulationState.js"></script>
+
+    <script src="../../scripts/appUI/visualizationUI/snippet/SnippetManager.js"></script>
+    <script src="../../scripts/appUI/visualizationUI/snippet/Snippet.js"></script>
+    <script src="../../scripts/appUI/visualizationUI/uiElements/SnippetFavicon.js"></script>
+
+    <script src="../../scripts/appUI/visualizationUI/uiElements/CityLights.js"></script>
+
+    <script src="../../scripts/appUI/visualizationUI/note/Note.js"></script>
+    <script src="../../scripts/appUI/visualizationUI/note/NoteManager.js"></script>
+
+    <script src="../../scripts/appUI/visualizationUI/CollageInfoState.js"></script>
+    <script src="../../scripts/appUI/visualizationUI/CollageManipulationState.js"></script>
+
+    <!-- UI Components -->
+
+    <script src="../../scripts/appUI/visualizationUI/uiElements/PreviewComponent.js"></script>
+
+    <!-- Keyword Visualization -->
+    <script src="../../scripts/appUI/visualizationUI/cluster/ClusterManager.js"></script>
+    <script src="../../scripts/appUI/visualizationUI/cluster/Cluster.js"></script>
+    <script src="../../scripts/appUI/visualizationUI/cluster/ClusterManipulationState.js"></script>
+    <script src="../../scripts/appUI/visualizationUI/cluster/ClusterInfoState.js"></script>
+
+    <script src="../../scripts/appUI/visualizationUI/uiElements/KwicComponent.js"></script>
+
+    <!-- Text Analysis -->
+
+    <script src="../../scripts/appBL/textAnalysis/TextProcessor.js"></script>
+    <script src="../../scripts/appBL/textAnalysis/TFIDFProcessor.js"></script>
+    <script src="../../scripts/appBL/textAnalysis/TermFrequencyManager.js"></script>
+    <script src="../../scripts/appBL/textAnalysis/TFIDFMatcher.js"></script>
+
+
+    <!-- Geometry -->
+    <script src="../../scripts/appBL/geometry/Point.js"></script>
+    <script src="../../scripts/appBL/geometry/Polygon.js"></script>
+    <script src="../../scripts/appBL/geometry/Rectangle.js"></script>
+    <script src="../../scripts/appBL/geometry/Line.js"></script>
+
+    <!-- Utilities -->
+
+    <script src="../../scripts/utils/DomHelper.js"></script>
+    <script src="../../scripts/appUI/visualizationUI/supportClasses/SnippetSearchResultManager.js"></script>
+    <script src="../../scripts/appUI/visualizationUI/supportClasses/TextMeasurementTool.js"></script>
+
+    <!-- Repositories -->
+    <script src="../../scripts/appDAL/GenericRepository.js"></script>
+    <script src="../../scripts/appDAL/SnippetRepository.js"></script>
+    <script src="../../scripts/appDAL/RepositoryManager.js"></script>
+
+
+    <!-- Visualisation Main -->
+
+    <script src="../../scripts/appUI/visualizationUI/InformationCollage.js"></script>
+
+
 
 </head>
+
 <body>
 
-<!-- User Interface -->
+    <!-- User Interface -->
 
-<div class="userInterfaceLeft">
-    <div role="tablist" aria-multiselectable="true" id="menuGroupLeft">
-        <p>
-        <div class="btn-group">
-            <button id="btnOpenCollageSearchBar" class="btn btn-primary pointerEnabled" type="button" role="button">Collage Search</button>
-            <button id="btnOpenSnippetBar" class="btn btn-primary pointerEnabled" type="button" role="button">Snippets</button>
-        </div>
+    <div class="userInterfaceLeft">
+        <div role="tablist" aria-multiselectable="true" id="menuGroupLeft">
+            <p>
+            <div class="btn-group">
+                <button id="btnOpenCollageSearchBar" class="btn btn-primary pointerEnabled" type="button"
+                    role="button">Collage Search</button>
+                <button id="btnOpenSnippetBar" class="btn btn-primary pointerEnabled" type="button"
+                    role="button">Snippets</button>
+            </div>
 
-        </p>
+            </p>
 
-        <div class="panel" style="background-color: transparent">
-            <div class="collapse" id="collapseWeb" style="background: rgba(100,100,100,0);">
-                <div class="row">
-                    <div class="col-xs-6">
-                        <div class="btn-group" data-toggle="buttons">
-                            <div class="input-group pointerEnabled" style="background-color: transparent">
-                                <input type="text" id="txtWebSearch"  placeholder="Search for ..." class="form-control">
+            <div class="panel" style="background-color: transparent">
+                <div class="collapse" id="collapseWeb" style="background: rgba(100,100,100,0);">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="btn-group" data-toggle="buttons">
+                                <div class="input-group pointerEnabled" style="background-color: transparent">
+                                    <input type="text" id="txtWebSearch" placeholder="Search for ..."
+                                        class="form-control">
                                     <span class="input-group-btn">
-                                        <input type="button" id="btnStartWebSearch" value="Search" class="btn btn-default">
+                                        <input type="button" id="btnStartWebSearch" value="Search"
+                                            class="btn btn-default">
                                     </span>
-                            </div>
-                        </div>
-                </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-6">
-                        <div class="searchResultDivOuter panel panel-primary">
-                            <div class="panel-heading">
-                                Search Results
-                            </div>
-                            <div class="panel-body" >
-                                Keywords: <span id="searchKeywords"></span>
-                            </div>
-                            <div id="webSearchResultsDiv" class="panel-body">
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="collapse" id="collapseSearch">
-                <div class="row">
-                    <div class="col-xs-6">
-                        <div class="input-group">
-                            <input type="text" id="txtKeywordsearch" placeholder="Search for ..." class="form-control pointerEnabled">
-                            <span class="input-group-btn">
-                                <input type="button" id="btnSearch" value="Search" class="btn btn-default pointerEnabled">
-                            </span>
-                        </div>
-                    </div>
-                    <div class="col-xs-4 ">
-                        <button class="btn btn-primary pointerEnabled" id="searchHitsButton">Hits <span id="searchHits" class="badge searchBadge"></span></button>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-6 ">
-                        <div class="panel panel-primary searchResultDivOuter">
-                            <div class="panel-heading">
-                                Search Results
-                            </div>
-                            <div class="panel-body">
-                                <div id="previewContainer" >
-
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="userInterfaceRight">
-    <div role="tablist" aria-multiselectable="true" id="menuGroupRight">
-        <p>
-        <div class="btn-group">
-            <button id="btnCreateNote" class="btn btn-primary pointerEnabled" type="button" role="button">Create Note</button>
-            <button id="btnShowHideClusters" class="btn btn-primary pointerEnabled" type="button" role="button">Toggle Clusters</button>
-            <button id="btnClusterScaling" class="btn btn-primary pointerEnabled" type="button" role="button">Toggle Scaling</button>
-        </div>
-
-        </p>
-    </div>
-    <div>
-         <h4>Cluster threshold</h4>
-        <input id="sldClusterDistance" type="range" class="form-control" style="width:260px" min="10" value="100" max="200" step="10" />
-    </div>
-</div>
-
-
-<!-- Svg Canvas -->
-
-<div class="" style="margin-top:0px;overflow-x: hidden;overflow-y: hidden; background-color: #f5f5f5" id="mainContainer">
-    <svg version="1.2" id="mainSvgElement" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  >
-        <defs>
-            <filter id="hull-blur" width="250%" height="250%" x="-60%" y="-60%">
-                <feGaussianBlur id="hull-blur-gauss" in="SourceAlpha" stdDeviation="100" result="blur" />
-                <feFlood flood-color="#ffffff" flood-opacity="0.5" result="floodColor" id="hull-blur-flood" />
-                <feComposite in="floodColor" in2="blur" operator="in" result="compositeBlur"/>
-            </filter>
-            <filter id="hull-blur-selected" width="100%" height="100%" x="-30%" y="-30%">
-                <feGaussianBlur id="hull-blur-gauss-selected" in="SourceAlpha" stdDeviation="10" result="blur" />
-                <feFlood flood-color="#FF2222" flood-opacity="1.5" result="floodColor"  />
-                <feComposite in="floodColor" in2="blur" operator="in" result="compositeBlur"  />
-            </filter>
-            <g id="clusterFilters">
-
-            </g>
-            <filter height="116%" width="116%" y="-8%" x="-8%" id="svgBlur">
-                <feGaussianBlur stdDeviation="8" in="SourceGraphic"/>
-            </filter>
-            <marker xmlns="http://www.w3.org/2000/svg" id="triangle" viewBox="0 0 10 10" refX="0" refY="5" markerUnits="strokeWidth" markerWidth="16" markerHeight="12" orient="auto">
-                <path d="M 0 0 L 10 5 L 0 10 z"/>
-            </marker>
-        </defs>
-        <g id="baseLayer">
-            <g id="linkLayer"></g>
-            <g id="bubbleLayer"></g>
-            <g id="noteLayer"></g>
-            <g id="snippetLayer"></g>
-            <g id="faviconLayer"></g>
-            <g id="clusterLayer"></g>
-            <g id="cityLightLayer"></g>
-        </g>
-        <g id="snippetEntryLayer" class="hideLayer">
-            <rect class="snippetEntryBar"></rect>
-        </g>
-        <g id="webSearchLayer">
-            <rect transform="translate(330,100)" width="1" height="1" fill="transparent" stroke="transparent" id="panelTermHost"></rect>
-        </g>
-
-
-    </svg>
-</div>
-
-<!-- Modals -->
-<div class="modal fade" id="snippetDetailsModal"  role="dialog">
-    <div class="modal-dialog" style="width:1200px">
-        <div class="modal-content">
-            <div class="modal-body" style="padding:40px 50px;">
-                <div class="container-fluid" >
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <h3><img id="favIconImage" style="vertical-align:middle" > Snippet Details</h3>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xs-5">
-                            <div class="panel panel-default">
+                        <div class="col-xs-6">
+                            <div class="searchResultDivOuter panel panel-primary">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title">Snippet Image</h3>
+                                    Search Results
                                 </div>
                                 <div class="panel-body">
-                                    <img id="snippetImage" class="img-responsive" src="http://www.freedigitalphotos.net/images/img/homepage/87357.jpg">
+                                    Keywords: <span id="searchKeywords"></span>
+                                </div>
+                                <div id="webSearchResultsDiv" class="panel-body">
+
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xs-7" id="snippetDetailsWordcloudColumn">
-
-                            <div class="panel panel-default">
+                    </div>
+                </div>
+                <div class="collapse" id="collapseSearch">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="input-group">
+                                <input type="text" id="txtKeywordsearch" placeholder="Search for ..."
+                                    class="form-control pointerEnabled">
+                                <span class="input-group-btn">
+                                    <input type="button" id="btnSearch" value="Search"
+                                        class="btn btn-default pointerEnabled">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 ">
+                            <button class="btn btn-primary pointerEnabled" id="searchHitsButton">Hits <span
+                                    id="searchHits" class="badge searchBadge"></span></button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 ">
+                            <div class="panel panel-primary searchResultDivOuter">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title">Snippet Metadata</h3>
+                                    Search Results
                                 </div>
                                 <div class="panel-body">
-                                    <label for="snippetDetailsTime">Time</label> <p><span id="snippetDetailsTime"></span></p>
-                                    <!--<label  for="snippetsLabel">Webpage</label>-->
-                                    <!--<p><span id="snippetsLabel" ><a class="btn btn-default" id="snippetDetailsUrl">Open Webpage</a></span></p>-->
-                                    <div class="form-group">
-                                        <label for="snippetDetailsQuote">Comment</label>
-                                        <input type="text" class="form-control" id="snippetDetailsQuote" placeholder="Comment">
+                                    <div id="previewContainer">
+
                                     </div>
-
-                                </div>
-                            </div>
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">Snippet Actions</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <p><span id="snippetsLabel" ><a class="btn btn-default" id="snippetDetailsUrl">Open Webpage</a></span>
-                                        <span><a class="btn btn-default" id="snippetDetailsCopyToClipboard">Copy to Clipboard</a></span>
-                                        <span><a class="btn btn-default" id="snippetDetailsShowText">Show Text</a></span>
-                                    </p>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                    <div class="row" style="margin-top:20px">
-                        <div class="col-xs-12">
-                            <button type="button" id="snippetDetailsModalClose" class="btn btn-success btn-block">Done</button>
+    <div class="userInterfaceRight">
+        <div role="tablist" aria-multiselectable="true" id="menuGroupRight">
+            <p>
+            <div class="btn-group">
+                <button id="btnCreateNote" class="btn btn-primary pointerEnabled" type="button" role="button">Create
+                    Note</button>
+                <button id="btnShowHideClusters" class="btn btn-primary pointerEnabled" type="button"
+                    role="button">Toggle Clusters</button>
+                <button id="btnClusterScaling" class="btn btn-primary pointerEnabled" type="button" role="button">Toggle
+                    Scaling</button>
+            </div>
+
+            </p>
+        </div>
+        <div>
+            <h4>Cluster threshold</h4>
+            <input id="sldClusterDistance" type="range" class="form-control" style="width:260px" min="10" value="100"
+                max="200" step="10" />
+        </div>
+    </div>
+
+
+    <!-- Svg Canvas -->
+
+    <div class="" style="margin-top:0px;overflow-x: hidden;overflow-y: hidden; background-color: #f5f5f5"
+        id="mainContainer">
+        <svg version="1.2" id="mainSvgElement" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink">
+            <defs>
+                <filter id="hull-blur" width="250%" height="250%" x="-60%" y="-60%">
+                    <feGaussianBlur id="hull-blur-gauss" in="SourceAlpha" stdDeviation="100" result="blur" />
+                    <feFlood flood-color="#ffffff" flood-opacity="0.5" result="floodColor" id="hull-blur-flood" />
+                    <feComposite in="floodColor" in2="blur" operator="in" result="compositeBlur" />
+                </filter>
+                <filter id="hull-blur-selected" width="100%" height="100%" x="-30%" y="-30%">
+                    <feGaussianBlur id="hull-blur-gauss-selected" in="SourceAlpha" stdDeviation="10" result="blur" />
+                    <feFlood flood-color="#FF2222" flood-opacity="1.5" result="floodColor" />
+                    <feComposite in="floodColor" in2="blur" operator="in" result="compositeBlur" />
+                </filter>
+                <g id="clusterFilters">
+
+                </g>
+                <filter height="116%" width="116%" y="-8%" x="-8%" id="svgBlur">
+                    <feGaussianBlur stdDeviation="8" in="SourceGraphic" />
+                </filter>
+                <marker xmlns="http://www.w3.org/2000/svg" id="triangle" viewBox="0 0 10 10" refX="0" refY="5"
+                    markerUnits="strokeWidth" markerWidth="16" markerHeight="12" orient="auto">
+                    <path d="M 0 0 L 10 5 L 0 10 z" />
+                </marker>
+            </defs>
+            <g id="baseLayer">
+                <g id="linkLayer"></g>
+                <g id="bubbleLayer"></g>
+                <g id="noteLayer"></g>
+                <g id="snippetLayer"></g>
+                <g id="faviconLayer"></g>
+                <g id="clusterLayer"></g>
+                <g id="cityLightLayer"></g>
+            </g>
+            <g id="snippetEntryLayer" class="hideLayer">
+                <rect class="snippetEntryBar"></rect>
+            </g>
+            <g id="webSearchLayer">
+                <rect transform="translate(330,100)" width="1" height="1" fill="transparent" stroke="transparent"
+                    id="panelTermHost"></rect>
+            </g>
+
+
+        </svg>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal fade" id="snippetDetailsModal" role="dialog">
+        <div class="modal-dialog" style="width:1200px">
+            <div class="modal-content">
+                <div class="modal-body" style="padding:40px 50px;">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h3><img id="favIconImage" style="vertical-align:middle"> Snippet Details</h3>
+                            </div>
                         </div>
+                        <div class="row">
+                            <div class="col-xs-5">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Snippet Image</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <img id="snippetImage" class="img-responsive"
+                                            src="http://www.freedigitalphotos.net/images/img/homepage/87357.jpg">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-7" id="snippetDetailsWordcloudColumn">
+
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Snippet Metadata</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <label for="snippetDetailsTime">Time</label>
+                                        <p><span id="snippetDetailsTime"></span></p>
+                                        <!--<label  for="snippetsLabel">Webpage</label>-->
+                                        <!--<p><span id="snippetsLabel" ><a class="btn btn-default" id="snippetDetailsUrl">Open Webpage</a></span></p>-->
+                                        <div class="form-group">
+                                            <label for="snippetDetailsQuote">Comment</label>
+                                            <input type="text" class="form-control" id="snippetDetailsQuote"
+                                                placeholder="Comment">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Snippet Actions</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <p><span id="snippetsLabel"><a class="btn btn-default"
+                                                    id="snippetDetailsUrl">Open Webpage</a></span>
+                                            <span><a class="btn btn-default" id="snippetDetailsCopyToClipboard">Copy to
+                                                    Clipboard</a></span>
+                                            <span><a class="btn btn-default" id="snippetDetailsShowText">Show
+                                                    Text</a></span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top:20px">
+                            <div class="col-xs-12">
+                                <button type="button" id="snippetDetailsModalClose"
+                                    class="btn btn-success btn-block">Done</button>
+                            </div>
+                        </div>
+
                     </div>
 
+
                 </div>
-
-
             </div>
-        </div>
 
-    </div>
-</div>
-
-<div class="modal fade" id="textModal"  role="dialog">
-    <div class="modal-dialog" style="width:800px" >
-        <div class="modal-content">
-            <div class="modal-body" style="padding:40px 50px;">
-                <div class="form-group">
-                    <div id="textModalContent">
-
-                    </div>
-                </div>
-                <button type="button" id="closeTextModal" class="btn btn-success btn-block">Close</button>
-            </div>
         </div>
     </div>
-</div>
 
-<div class="modal fade" id="tagBubbleModal" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body" style="padding:40px 50px;">
-                <div class="form-group">
-                    <label for="txtBubbleTag"> Bubble Name</label>
-                    <input type="text" class="form-control" id="txtBubbleTag" placeholder="Enter Bubble Name">
-                </div>
-                <button type="button" id="btnStoreBubbleTag" class="btn btn-success btn-block">Store</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="createEditNodeModal" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body" style="padding:40px 50px;">
-                <div class="form-group">
-                    <label for="txtNoteTitle">Note Title</label>
-                    <input type="text" class="form-control" id="txtNoteTitle" placeholder="Enter Note Title">
-                    <label for="txtNoteText">Note Text</label>
-                    <textarea id="txtNoteText" class="form-control noteTextarea" placeholder="Enter Note Text"></textarea>
-                </div>
-                <button type="button" id="btnStoreNote" class="btn btn-success btn-block">Store Note</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!--Comment-->
-
-<div class="modal fade" id="colorBubbleModal"  role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body" style="padding:40px 50px;">
-                <div class="form-group">
-                    <h4>Select new Color</h4>
+    <div class="modal fade" id="textModal" role="dialog">
+        <div class="modal-dialog" style="width:800px">
+            <div class="modal-content">
+                <div class="modal-body" style="padding:40px 50px;">
                     <div class="form-group">
-                        <br>
-                    <input type="color" class="form-control" value="SlateGrey" id="bubbleColor"  >
-                            <br>
-                    <input class="btn btn-default" type="button" id="confirmColor" value="Confirm"/>
+                        <div id="textModalContent">
+
                         </div>
+                    </div>
+                    <button type="button" id="closeTextModal" class="btn btn-success btn-block">Close</button>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<div id="consentModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Consent Form</h4>
-            </div>
-            <div class="modal-body">
-                <p>By closing this dialog, I agree to participate in this study conducted by the Institute for Computer Graphics and Algorithms of Vienna University of Technology.
-                    I understand and consent that my interactions with the Information Collage Google Chrome Plugin will be logged on a remote server. I understand that the recorded information is for research purposes only and will be treated anonymously.
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Confirm</button>
+    <div class="modal fade" id="tagBubbleModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" style="padding:40px 50px;">
+                    <div class="form-group">
+                        <label for="txtBubbleTag"> Bubble Name</label>
+                        <input type="text" class="form-control" id="txtBubbleTag" placeholder="Enter Bubble Name">
+                    </div>
+                    <button type="button" id="btnStoreBubbleTag" class="btn btn-success btn-block">Store</button>
+                </div>
             </div>
         </div>
-
     </div>
-</div>
+
+    <div class="modal fade" id="createEditNodeModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" style="padding:40px 50px;">
+                    <div class="form-group">
+                        <label for="txtNoteTitle">Note Title</label>
+                        <input type="text" class="form-control" id="txtNoteTitle" placeholder="Enter Note Title">
+                        <label for="txtNoteText">Note Text</label>
+                        <textarea id="txtNoteText" class="form-control noteTextarea"
+                            placeholder="Enter Note Text"></textarea>
+                    </div>
+                    <button type="button" id="btnStoreNote" class="btn btn-success btn-block">Store Note</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Comment-->
+
+    <div class="modal fade" id="colorBubbleModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" style="padding:40px 50px;">
+                    <div class="form-group">
+                        <h4>Select new Color</h4>
+                        <div class="form-group">
+                            <br>
+                            <input type="color" class="form-control" value="SlateGrey" id="bubbleColor">
+                            <br>
+                            <input class="btn btn-default" type="button" id="confirmColor" value="Confirm" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="consentModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Consent Form</h4>
+                </div>
+                <div class="modal-body">
+                    <p>By closing this dialog, I agree to participate in this study conducted by the Institute for
+                        Computer Graphics and Algorithms of Vienna University of Technology.
+                        I understand and consent that my interactions with the Information Collage Google Chrome Plugin
+                        will be logged on a remote server. I understand that the recorded information is for research
+                        purposes only and will be treated anonymously.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Confirm</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 
 
-<!-- Context Menus -->
+    <!-- Context Menus -->
 
-<ul id="snippetContextMenu" class="dropdown-menu" role="menu" style="display:none" >
-    <li><a id="cmGotoSnippetWebpage" tabindex="-1" href="#">Goto Webpage</a></li>
-    <li><a id="cmShowSnippetDetails" tabindex="-1" href="#">Show Details</a></li>
-    <li><a id="cmMarkSnippetAsImportant" tabindex="-1" href="#">Mark/Unmark as important</a></li>
-    <li><a id="cmCopyText" tabindex="-1" href="#">Copy Text</a></li>
-    <li><a id="cmShowText" tabindex="-1" href="#">Show Text</a></li>
-    <li class="divider"></li>
-    <li><a id="cmDeleteSnippet" tabindex="-1" href="#">Delete Snippet</a></li>
-</ul>
+    <ul id="snippetContextMenu" class="dropdown-menu" role="menu" style="display:none">
+        <li><a id="cmGotoSnippetWebpage" tabindex="-1" href="#">Goto Webpage</a></li>
+        <li><a id="cmShowSnippetDetails" tabindex="-1" href="#">Show Details</a></li>
+        <li><a id="cmMarkSnippetAsImportant" tabindex="-1" href="#">Mark/Unmark as important</a></li>
+        <li><a id="cmCopyText" tabindex="-1" href="#">Copy Text</a></li>
+        <li><a id="cmShowText" tabindex="-1" href="#">Show Text</a></li>
+        <li class="divider"></li>
+        <li><a id="cmDeleteSnippet" tabindex="-1" href="#">Delete Snippet</a></li>
+    </ul>
 
-<ul id="clusterContextMenu" class="dropdown-menu" role="menu" style="display:none" >
-    <li><a id="cmClusterQuery" tabindex="-1" href="#">Query Cluster Keywords</a></li>
-</ul>
+    <ul id="clusterContextMenu" class="dropdown-menu" role="menu" style="display:none">
+        <li><a id="cmClusterQuery" tabindex="-1" href="#">Query Cluster Keywords</a></li>
+    </ul>
 
-<ul id="noteContextMenu" class="dropdown-menu" role="menu" style="display:none">
-    <li><a id="cmDeleteNote" tabindex="-1" href="#">Delete Note</a></li>
-</ul>
+    <ul id="noteContextMenu" class="dropdown-menu" role="menu" style="display:none">
+        <li><a id="cmDeleteNote" tabindex="-1" href="#">Delete Note</a></li>
+    </ul>
 
-<ul id="bubbleContextMenu" class="dropdown-menu" role="menu" style="display:none" >
-    <li><a id="cmTagBubble" tabindex="-1" href="#">Create Tag</a></li>
-    <li><a id="cmChangeColorBubble" tabindex="-1" href="#">Change Color</a></li>
-    <li class="divider"></li>
-    <li><a id="cmDeleteBubble" tabindex="-1" href="#">Delete Bubble</a></li>
-</ul>
+    <ul id="bubbleContextMenu" class="dropdown-menu" role="menu" style="display:none">
+        <li><a id="cmTagBubble" tabindex="-1" href="#">Create Tag</a></li>
+        <li><a id="cmChangeColorBubble" tabindex="-1" href="#">Change Color</a></li>
+        <li class="divider"></li>
+        <li><a id="cmDeleteBubble" tabindex="-1" href="#">Delete Bubble</a></li>
+    </ul>
 
-<ul id="keyTermContextMenu" class="dropdown-menu" role="menu" style="display:none" >
-    <li><a id="cmAddTermToBox" tabindex="-1" href="#">Add to box</a></li>
-    <li><a id="cmAddTermToBoxAndStartSearch" tabindex="-1" href="#">Add to box and start search!</a></li>
-    <li><a id="cmAddTermToWebQuery" tabindex="-1" href="#">Add to Web Query</a></li>
-    <li><a id="cmAddTermToWebQueryAndStart" tabindex="-1" href="#">Add to Web Query and start!</a></li>
-</ul>
+    <ul id="keyTermContextMenu" class="dropdown-menu" role="menu" style="display:none">
+        <li><a id="cmAddTermToBox" tabindex="-1" href="#">Add to box</a></li>
+        <li><a id="cmAddTermToBoxAndStartSearch" tabindex="-1" href="#">Add to box and start search!</a></li>
+        <li><a id="cmAddTermToWebQuery" tabindex="-1" href="#">Add to Web Query</a></li>
+        <li><a id="cmAddTermToWebQueryAndStart" tabindex="-1" href="#">Add to Web Query and start!</a></li>
+    </ul>
 
-<ul id="canvasContextMenu" class="dropdown-menu" role="menu" style="display:none" >
-    <li><a id="cmCreateBubble" tabindex="-1" href="#">Create Bubble</a></li>
-    <li><a id="cmCreateNote" tabindex="-1" href="#">Create Note</a></li>
-    <li><a id="cmToggleClusters">Toggle Cluster visibility</a></li>
-    <!--<li><a id="cmdStartLDA" tabindex="-1" href="#">Extract topics &#45;&#45; Experimental</a></li>-->
-</ul>
+    <ul id="canvasContextMenu" class="dropdown-menu" role="menu" style="display:none">
+        <li><a id="cmCreateBubble" tabindex="-1" href="#">Create Bubble</a></li>
+        <li><a id="cmCreateNote" tabindex="-1" href="#">Create Note</a></li>
+        <li><a id="cmToggleClusters">Toggle Cluster visibility</a></li>
+        <!--<li><a id="cmdStartLDA" tabindex="-1" href="#">Extract topics &#45;&#45; Experimental</a></li>-->
+    </ul>
 
 
 </body>
+
 </html>
