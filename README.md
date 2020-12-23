@@ -1,8 +1,12 @@
 # Information-Collage
 
-Plugin Code - Beware it has bugs and is partly not well written and old.
+Plugin Code
 
-I did not have time to fix the issue yet.
+!!Beware!! 
+
+- It has bugs 
+- The folder and code structure has issues
+- It is partly not well written and old.
 
 Using the Plugin:
 
