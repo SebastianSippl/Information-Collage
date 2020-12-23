@@ -8,6 +8,16 @@ class Snippet extends  Item
         this._domElement = null;
     }
 
+    click(e){
+        chrome.tabs.create({ url: this.url}, tab => {
+
+            //Send information about selected element to tab
+            //TODO: This scrolling method is error prone. It should be done with proper message passing. (When script/page/pdf has completed loading)
+            setTimeout(() => {  chrome.tabs.sendMessage(tab.id, {name: "scrollToElement",scrollTop: this.annotation().scrollTop});}, 2000)
+
+        });
+    }
+
     get x()
     {
         return super.x;
@@ -182,10 +192,7 @@ class Snippet extends  Item
 
     getDomElement()
     {
-     //   if(this._domElement == null)
-            this._domElement = d3.selectAll(".snippet").filter(x => this.id == x.id).node();
-
-        return this._domElement;
+        return d3.selectAll(".snippet").filter(x => this.id == x.id).node();
     }
 
     

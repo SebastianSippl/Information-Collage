@@ -186,7 +186,7 @@ class SnippetManager
                 })
                 .on("mouseover", (s) => this.interactionState.mouseOver(s))
                 .on("mouseout",  (s) => this.interactionState.mouseOut(s))
-                .on("click",     (s) => this.interactionState.click(s));
+                .on("click",     (s) => { this.interactionState.click(s); s.click(); });
 
 
             $(sCont._groups[0]).tooltip({container: "body", html:true, trigger:"manual"});
