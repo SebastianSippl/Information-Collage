@@ -13,7 +13,9 @@
     "default_icon": "images/collage-512.png",
     "default_popup": "html/popup.html"
   },
-
+  "chrome_url_overrides": {
+    "newtab": "html/InformationCollage.html"
+},
   "content_security_policy": "script-src 'self' 'unsafe-eval' https://www.googleapis.com https://www.google.com; object-src 'self'",
   "permissions": [
     "activeTab",
