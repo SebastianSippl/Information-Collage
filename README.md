@@ -6,7 +6,7 @@ Plugin Code
 
 - It has bugs 
 - The code is a mess
-- The code is old
+- The library versions are outdated
 
 Using the Plugin:
 
