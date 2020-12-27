@@ -5,8 +5,8 @@ Plugin Code
 !!Beware!! 
 
 - It has bugs 
-- The folder and code structure has issues
-- It is partly not well written and old.
+- The code is a mess
+- The code is old
 
 Using the Plugin:
 
